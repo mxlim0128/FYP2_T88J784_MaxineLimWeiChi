@@ -1,18 +1,26 @@
 """
-Phase 3 – Threshold Baseline for Washing Machine (House 1)
-ERROR-PROOF VERSION
+Phase 3 – Prepare Seq2Point Data (Washing Machine)
+MEMORY-SAFE VERSION
 """
 
+import numpy as np
 from nilmtk import DataSet
-from sklearn.metrics import mean_absolute_error, f1_score
 
 # -----------------------------
 # Configuration
 # -----------------------------
 DATA_PATH = "data/processed/refit.h5"
+OUTPUT_PATH = "data/phase3/house1_washing_machine_seq2point.npz"
+
 BUILDING_ID = 1
 TARGET_NAME = "washing machine"
-THRESHOLD_WATTS = 150
+
+WINDOW_SIZE = 599
+DOWNSAMPLE = "10S"          # 10-second sampling
+MAX_WINDOWS = 200000       # cap number of samples
+
+AGG_MAX = 5000.0
+APP_MAX = 2500.0
 
 # -----------------------------
 # Load dataset
@@ -22,10 +30,11 @@ ds = DataSet(DATA_PATH)
 elec = ds.buildings[BUILDING_ID].elec
 
 # -----------------------------
-# Load aggregate power
+# Load & downsample aggregate
 # -----------------------------
 print("Loading aggregate power...")
 aggregate = elec.mains().power_series_all_data().dropna()
+aggregate = aggregate.resample(DOWNSAMPLE).mean().dropna()
 
 # -----------------------------
 # Find washing machine submeter
@@ -35,10 +44,7 @@ washing_machine_meter = None
 
 for i, meter in enumerate(elec.submeters().meters):
     for appliance in meter.appliances:
-        # SAFE conversion (this fixes everything)
-        appliance_name = str(appliance.type).lower()
-
-        if TARGET_NAME in appliance_name:
+        if TARGET_NAME in str(appliance.type).lower():
             washing_machine_meter = meter
             print(f"✔ Found washing machine at meter {i}")
             break
@@ -50,45 +56,39 @@ if washing_machine_meter is None:
     raise RuntimeError("Washing machine not found!")
 
 # -----------------------------
-# Load washing machine power
+# Load & downsample appliance
 # -----------------------------
 print("Loading washing machine power...")
-appliance_power = washing_machine_meter.power_series_all_data().dropna()
+appliance = washing_machine_meter.power_series_all_data().dropna()
+appliance = appliance.resample(DOWNSAMPLE).mean().dropna()
 
 # -----------------------------
 # Align timestamps
 # -----------------------------
-aggregate, appliance_power = aggregate.align(appliance_power, join="inner")
+aggregate, appliance = aggregate.align(appliance, join="inner")
 
 # -----------------------------
-# Threshold baseline
+# Create sliding windows (LIMITED)
 # -----------------------------
-print("Applying threshold baseline...")
-predicted_power = aggregate.copy()
-predicted_power[predicted_power < THRESHOLD_WATTS] = 0
+print("Creating sliding windows...")
+half = WINDOW_SIZE // 2
+X, y = [], []
+
+for i in range(half, len(aggregate) - half):
+    X.append(aggregate.iloc[i - half : i + half + 1].values)
+    y.append(appliance.iloc[i])
+
+    if len(X) >= MAX_WINDOWS:
+        break
+
+X = np.array(X, dtype=np.float32) / AGG_MAX
+y = np.array(y, dtype=np.float32) / APP_MAX
 
 # -----------------------------
-# Metrics
+# Save data
 # -----------------------------
-mae = mean_absolute_error(appliance_power, predicted_power)
+np.savez(OUTPUT_PATH, X=X, y=y)
+print(f"Saved {len(X)} windows to:", OUTPUT_PATH)
 
-y_true = (appliance_power > THRESHOLD_WATTS).astype(int)
-y_pred = (predicted_power > THRESHOLD_WATTS).astype(int)
-
-f1 = f1_score(y_true, y_pred, zero_division=0)
-
-# -----------------------------
-# Results
-# -----------------------------
-print(f"Threshold MAE (W): {mae:.3f}")
-print(f"Threshold F1-score: {f1:.3f}")
-
-with open("results/phase3/threshold_washing_machine_metrics.txt", "w") as f:
-    f.write(f"MAE (W): {mae:.3f}\n")
-    f.write(f"F1-score: {f1:.3f}\n")
-
-# -----------------------------
-# Cleanup
-# -----------------------------
 ds.store.close()
 
