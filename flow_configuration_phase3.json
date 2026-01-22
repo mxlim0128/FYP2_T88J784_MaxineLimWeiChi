@@ -1,0 +1,228 @@
+[
+    {
+        "id": "5898543ddf3dd06a",
+        "type": "tab",
+        "label": "Flow 1",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "355d7c66c2b67136",
+        "type": "mqtt in",
+        "z": "5898543ddf3dd06a",
+        "name": "Aggregate Power In",
+        "topic": "home/aggregate/power",
+        "qos": "1",
+        "datatype": "auto-detect",
+        "broker": "c356dbf55fb7d324",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 150,
+        "y": 80,
+        "wires": [
+            [
+                "596b213b251941e4"
+            ]
+        ]
+    },
+    {
+        "id": "596b213b251941e4",
+        "type": "function",
+        "z": "5898543ddf3dd06a",
+        "name": "Format Aggregate Power for InfluxDB",
+        "func": "// Parse the power string (e.g., \"1907.67\") into a float\nvar power = parseFloat(msg.payload);\n\n// Ensure it's a valid number and package it for InfluxDB\nif (!isNaN(power)) {\n    // InfluxDB expects an array of points. \n    // Measurement: 'aggregate_power'\n    // Field: 'value' (the power in Watts)\n    msg.payload = [\n        {\n            measurement: \"aggregate_power\",\n            fields: {\n                value: power\n            },\n            tags: {\n                device: \"mains\" // Optional tag for filtering\n            }\n        }\n    ];\n\n    msg.organization = \"nilm-org\";\n    msg.bucket = \"nilm-bucket\";\n    \n    return msg;\n}\nreturn null; // Stop the flow if the payload is not a number",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 550,
+        "y": 80,
+        "wires": [
+            [
+                "3c86d8eab3bf3cd8"
+            ]
+        ]
+    },
+    {
+        "id": "3c86d8eab3bf3cd8",
+        "type": "influxdb out",
+        "z": "5898543ddf3dd06a",
+        "influxdb": "d3e41b08ef55108a",
+        "name": "Local InfluxDB v2",
+        "measurement": "aggregate_power",
+        "precision": "",
+        "retentionPolicy": "",
+        "database": "database",
+        "precisionV18FluxV20": "ms",
+        "retentionPolicyV18Flux": "",
+        "org": "organisation",
+        "bucket": "bucket",
+        "x": 910,
+        "y": 80,
+        "wires": []
+    },
+    {
+        "id": "5f6c0f3eb4add7b8",
+        "type": "mqtt in",
+        "z": "5898543ddf3dd06a",
+        "name": "Disaggregated Fridge In",
+        "topic": "home/appliance/fridge/power ",
+        "qos": "1",
+        "datatype": "auto-detect",
+        "broker": "c356dbf55fb7d324",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 160,
+        "y": 180,
+        "wires": [
+            [
+                "da7a44a33d8378c9"
+            ]
+        ]
+    },
+    {
+        "id": "da7a44a33d8378c9",
+        "type": "function",
+        "z": "5898543ddf3dd06a",
+        "name": "Format Fridge Power for InfluxDB",
+        "func": "// Parse the predicted power string into a float\nvar power = parseFloat(msg.payload);\n\n// Package it for InfluxDB\nif (!isNaN(power)) {\n    msg.payload = [\n        {\n            measurement: \"fridge_power\", // NEW MEASUREMENT NAME\n            fields: {\n                value: power\n            },\n            tags: {\n                appliance: \"fridge\" // NEW TAG\n            }\n        }\n    ];\n    msg.organization = \"nilm-org\";\n    msg.bucket = \"nilm-bucket\";\n    return msg;\n}\nreturn null;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 540,
+        "y": 180,
+        "wires": [
+            [
+                "755cdce52b6ff4c6"
+            ]
+        ]
+    },
+    {
+        "id": "755cdce52b6ff4c6",
+        "type": "influxdb out",
+        "z": "5898543ddf3dd06a",
+        "influxdb": "d3e41b08ef55108a",
+        "name": "Write Fridge Power to DB",
+        "measurement": "fridge_power",
+        "precision": "",
+        "retentionPolicy": "",
+        "database": "database",
+        "precisionV18FluxV20": "ms",
+        "retentionPolicyV18Flux": "",
+        "org": "nilm-org",
+        "bucket": "nilm-bucket",
+        "x": 930,
+        "y": 180,
+        "wires": []
+    },
+    {
+        "id": "340561131b319515",
+        "type": "mqtt in",
+        "z": "5898543ddf3dd06a",
+        "name": "Heater NILM In",
+        "topic": "home/appliance/heater/power",
+        "qos": "1",
+        "datatype": "auto-detect",
+        "broker": "c356dbf55fb7d324",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 140,
+        "y": 280,
+        "wires": [
+            [
+                "0b350b7017197537"
+            ]
+        ]
+    },
+    {
+        "id": "0b350b7017197537",
+        "type": "function",
+        "z": "5898543ddf3dd06a",
+        "name": "Check Peak Hour & Decide",
+        "func": "// Implementation of the simple automated control strategy (Page 24 of plan)\nvar currentHour = new Date().getHours();\nvar isPeakTime = (currentHour >= 16 && currentHour <= 21); // 4 PM - 9 PM Example\nvar HEATER_ON_THRESHOLD = 50.0; // Appliance is considered ON if above 50W\n\n// 1. Get Disaggregated Power for Heater\nvar heaterPower = parseFloat(msg.payload);\nvar heaterIsOn = (!isNaN(heaterPower) && heaterPower > HEATER_ON_THRESHOLD);\n\n// 2. Decision Logic\nif (heaterIsOn && isPeakTime) {\n    // DECISION: TURN OFF (Prioritize turning off during peak)\n    msg.payload = \"off\";\n    node.warn(\"Decision: TURNING HEATER OFF (Peak Time)\"); // Log the action\n    return msg; // Pass 'off' command to the next node\n} else {\n    // DECISION: DO NOTHING\n    return null; // Stop the flow\n}",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 520,
+        "y": 280,
+        "wires": [
+            [
+                "d42f7f951056292c"
+            ]
+        ]
+    },
+    {
+        "id": "d42f7f951056292c",
+        "type": "exec",
+        "z": "5898543ddf3dd06a",
+        "command": "/usr/bin/python3",
+        "addpay": "payload",
+        "append": "/home/max/smart-energy-nilm/src/control/tplink_controller.py 192.168.1.50",
+        "useSpawn": "false",
+        "timer": "",
+        "winHide": false,
+        "oldrc": false,
+        "name": "Control Smart Plug",
+        "x": 910,
+        "y": 280,
+        "wires": [
+            [],
+            [],
+            []
+        ]
+    },
+    {
+        "id": "c356dbf55fb7d324",
+        "type": "mqtt-broker",
+        "name": "NILM Fridge Power In",
+        "broker": "localhost",
+        "port": "1883",
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": "4",
+        "keepalive": "60",
+        "cleansession": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    },
+    {
+        "id": "d3e41b08ef55108a",
+        "type": "influxdb",
+        "hostname": "127.0.0.1",
+        "port": "8086",
+        "protocol": "http",
+        "database": "database",
+        "name": "Local InfluxDB v2",
+        "usetls": false,
+        "tls": "",
+        "influxdbVersion": "2.0",
+        "url": "http://localhost:8086",
+        "timeout": "10",
+        "rejectUnauthorized": true
+    }
+]
