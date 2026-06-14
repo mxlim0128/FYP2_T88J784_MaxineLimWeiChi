@@ -1,0 +1,714 @@
+[
+    {
+        "id": "c2e9e564fd169a4f",
+        "type": "tab",
+        "label": "NILM Appliance Control",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "471696763278b25d",
+        "type": "ui_base",
+        "theme": {
+            "name": "theme-light",
+            "lightTheme": {
+                "default": "#0094CE",
+                "baseColor": "#0094CE",
+                "baseFont": "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif",
+                "edited": true,
+                "reset": false
+            },
+            "darkTheme": {
+                "default": "#097479",
+                "baseColor": "#097479",
+                "baseFont": "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif",
+                "edited": false
+            },
+            "customTheme": {
+                "name": "Untitled Theme 1",
+                "default": "#4B7930",
+                "baseColor": "#4B7930",
+                "baseFont": "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif"
+            },
+            "themeState": {
+                "base-color": {
+                    "default": "#0094CE",
+                    "value": "#0094CE",
+                    "edited": false
+                },
+                "page-titlebar-backgroundColor": {
+                    "value": "#0094CE",
+                    "edited": false
+                },
+                "page-backgroundColor": {
+                    "value": "#fafafa",
+                    "edited": false
+                },
+                "page-sidebar-backgroundColor": {
+                    "value": "#ffffff",
+                    "edited": false
+                },
+                "group-textColor": {
+                    "value": "#1bbfff",
+                    "edited": false
+                },
+                "group-borderColor": {
+                    "value": "#ffffff",
+                    "edited": false
+                },
+                "group-backgroundColor": {
+                    "value": "#ffffff",
+                    "edited": false
+                },
+                "widget-textColor": {
+                    "value": "#111111",
+                    "edited": false
+                },
+                "widget-backgroundColor": {
+                    "value": "#0094ce",
+                    "edited": false
+                },
+                "widget-borderColor": {
+                    "value": "#ffffff",
+                    "edited": false
+                },
+                "base-font": {
+                    "value": "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif"
+                }
+            },
+            "angularTheme": {
+                "primary": "indigo",
+                "accents": "blue",
+                "warn": "red",
+                "background": "grey",
+                "palette": "light"
+            }
+        },
+        "site": {
+            "name": "Node-RED Dashboard",
+            "hideToolbar": "false",
+            "allowSwipe": "false",
+            "lockMenu": "false",
+            "allowTempTheme": "true",
+            "dateFormat": "DD/MM/YYYY",
+            "sizes": {
+                "sx": 48,
+                "sy": 48,
+                "gx": 6,
+                "gy": 6,
+                "cx": 6,
+                "cy": 6,
+                "px": 0,
+                "py": 0
+            }
+        }
+    },
+    {
+        "id": "mqtt_broker",
+        "type": "mqtt-broker",
+        "name": "Local MQTT Broker",
+        "broker": "localhost",
+        "port": 1883,
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": "4",
+        "keepalive": "60",
+        "cleansession": true,
+        "autoUnsubscribe": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    },
+    {
+        "id": "55d74a5002d64130",
+        "type": "influxdb",
+        "hostname": "127.0.0.1",
+        "port": 8086,
+        "protocol": "http",
+        "database": "database",
+        "name": "Save Appliance Data",
+        "usetls": false,
+        "tls": "",
+        "influxdbVersion": "2.0",
+        "url": "http://localhost:8086",
+        "timeout": 10,
+        "rejectUnauthorized": true
+    },
+    {
+        "id": "0ec41892aa6ca488",
+        "type": "ui_tab",
+        "name": "Appliance Status",
+        "icon": "dashboard",
+        "disabled": false,
+        "hidden": false
+    },
+    {
+        "id": "cadb4a93181419e2",
+        "type": "ui_group",
+        "name": "Appliance Status",
+        "tab": "0ec41892aa6ca488",
+        "order": 1,
+        "disp": true,
+        "width": 6,
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "c940a0596b86c775",
+        "type": "mqtt in",
+        "z": "c2e9e564fd169a4f",
+        "name": "home/power",
+        "topic": "home/power",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "mqtt_broker",
+        "nl": false,
+        "rap": false,
+        "inputs": 0,
+        "x": 170,
+        "y": 200,
+        "wires": [
+            [
+                "13b883e4a41b02f8",
+                "97043425e00ae3c9"
+            ]
+        ]
+    },
+    {
+        "id": "13b883e4a41b02f8",
+        "type": "json",
+        "z": "c2e9e564fd169a4f",
+        "name": "Parse JSON",
+        "property": "payload",
+        "action": "",
+        "pretty": false,
+        "x": 350,
+        "y": 220,
+        "wires": [
+            [
+                "21293fb28fbf9f8a"
+            ]
+        ]
+    },
+    {
+        "id": "ab6e2b9bdf6eb879",
+        "type": "function",
+        "z": "c2e9e564fd169a4f",
+        "name": "Appliance Priority Logic",
+        "func": "let totalPower = msg.original_payload?.total_power || 0;\n\n\nnode.warn(\"Total Power = \" + totalPower);\n\n\nif (totalPower > 2200) {\n\n\n    node.warn(\"OVERLOAD DETECTED\");\n\n\n    // First priority: Lamp\n    if (msg.payload.status.lamp == 1) {\n\n\n        node.warn(\"OVERLOAD -> Lamp OFF\");\n\n\n        msg.payload = {\n            lamp: \"OFF\"\n        };\n\n\n        return msg;\n    }\n\n\n    // Second priority: Laptop\n    if (msg.payload.status.laptop == 1) {\n\n\n        node.warn(\"OVERLOAD -> Laptop OFF\");\n\n\n        msg.payload = {\n            laptop: \"OFF\"\n        };\n\n\n        return msg;\n    }\n\n\n    node.warn(\"OVERLOAD BUT NO SHEDABLE LOAD FOUND\");\n}\n\n\n// No overload\nnode.warn(\"NORMAL OPERATION\");\n\n\nreturn null;\n\n\n\n\n\n\n",
+        "outputs": 1,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 390,
+        "y": 420,
+        "wires": [
+            [
+                "ed5c660e2a6f562e",
+                "def2912e95f0cef6"
+            ]
+        ]
+    },
+    {
+        "id": "ed5c660e2a6f562e",
+        "type": "mqtt out",
+        "z": "c2e9e564fd169a4f",
+        "name": "home/control",
+        "topic": "home/control",
+        "qos": "2",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "mqtt_broker",
+        "x": 650,
+        "y": 460,
+        "wires": []
+    },
+    {
+        "id": "97043425e00ae3c9",
+        "type": "debug",
+        "z": "c2e9e564fd169a4f",
+        "name": "Raw MQTT Data",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 370,
+        "y": 180,
+        "wires": []
+    },
+    {
+        "id": "def2912e95f0cef6",
+        "type": "debug",
+        "z": "c2e9e564fd169a4f",
+        "name": "Control Command Sent",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 690,
+        "y": 380,
+        "wires": []
+    },
+    {
+        "id": "a9d524c582864782",
+        "type": "function",
+        "z": "c2e9e564fd169a4f",
+        "name": "Format for InfluxDB",
+        "func": "msg.payload = {\n    total_power: msg.original_payload?.total_power || 0,\n    voltage: msg.original_payload?.voltage || 0,\n    current: msg.original_payload?.current || 0,\n\n\n    lamp: msg.payload.status?.lamp || 0,\n    kettle: msg.payload.status?.kettle || 0,\n    toaster: msg.payload.status?.toaster || 0,\n    laptop: msg.payload.status?.laptop || 0,\n\n\n    lamp_power: msg.payload.power?.lamp || 0,\n    kettle_power: msg.payload.power?.kettle || 0,\n    toaster_power: msg.payload.power?.toaster || 0,\n    laptop_power: msg.payload.power?.laptop || 0,\n\n\n    relay_lamp: msg.original_payload?.relay_lamp || 0,\n    relay_laptop: msg.original_payload?.relay_laptop || 0,\n    relay_kettle: msg.original_payload?.relay_kettle || 0,\n    relay_toaster: msg.original_payload?.relay_toaster || 0,\n\n\n    baseline_power: 1500,\n\n\n    energy_saved_percent:\n        Math.max(\n            0,\n            ((2200 - (msg.original_payload?.total_power || 0)) / 2200) * 100\n        )\n\n};\n\n\nreturn msg;\n\n",
+        "outputs": 1,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 430,
+        "y": 580,
+        "wires": [
+            [
+                "c2badbce2f5728ed",
+                "073fc7543458217b"
+            ]
+        ]
+    },
+    {
+        "id": "c2badbce2f5728ed",
+        "type": "influxdb out",
+        "z": "c2e9e564fd169a4f",
+        "influxdb": "55d74a5002d64130",
+        "name": "InfuxDB Write Seq2Point",
+        "measurement": "smart_energy",
+        "precision": "",
+        "retentionPolicy": "",
+        "database": "database",
+        "precisionV18FluxV20": "ms",
+        "retentionPolicyV18Flux": "",
+        "org": "SmartEnergy",
+        "bucket": "My Home",
+        "x": 710,
+        "y": 540,
+        "wires": []
+    },
+    {
+        "id": "073fc7543458217b",
+        "type": "debug",
+        "z": "c2e9e564fd169a4f",
+        "name": "Final Database Payload",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 710,
+        "y": 620,
+        "wires": []
+    },
+    {
+        "id": "bd9568a4d776b0a1",
+        "type": "comment",
+        "z": "c2e9e564fd169a4f",
+        "name": "1. Receive and Prepare Data",
+        "info": "Receives raw data from ESP32 via MQTT, parses it, and prepares it to be sent to the Python script.",
+        "x": 190,
+        "y": 120,
+        "wires": []
+    },
+    {
+        "id": "774b1a9de27f9361",
+        "type": "comment",
+        "z": "c2e9e564fd169a4f",
+        "name": "2. NILM Prediction",
+        "info": "Executes the main Python script (app.py) to perform the NILM appliance disaggregation and status prediction.",
+        "x": 750,
+        "y": 60,
+        "wires": []
+    },
+    {
+        "id": "51254e0792790bc8",
+        "type": "comment",
+        "z": "c2e9e564fd169a4f",
+        "name": "3. Overload Protection & Control",
+        "info": "Checks if the total power exceeds a set threshold (e.g., 2000W). If it does, it runs the priority logic to decide which appliance to turn off and sends an MQTT command.",
+        "x": 230,
+        "y": 340,
+        "wires": []
+    },
+    {
+        "id": "3a46ba99253118b9",
+        "type": "comment",
+        "z": "c2e9e564fd169a4f",
+        "name": "4. Data Storage",
+        "info": "Takes the raw sensor data and the prediction results, formats them correctly, and saves them to the InfluxDB time-series database for visualization.",
+        "x": 160,
+        "y": 560,
+        "wires": []
+    },
+    {
+        "id": "21293fb28fbf9f8a",
+        "type": "function",
+        "z": "c2e9e564fd169a4f",
+        "name": "Buffer 599 Samples",
+        "func": "let buffer = flow.get(\"buffer\") || [];\n\n\n// Convert JSON string to object\nlet data = JSON.parse(msg.payload);\n\n\nlet power = Number(data.total_power);\n\n\nnode.warn(\"POWER = \" + power);\n\n\nif (isNaN(power)) {\n    node.warn(\"POWER INVALID\");\n    return null;\n}\n\n\n// Save original sensor data\nmsg.original_payload = {\n    voltage: Number(data.voltage) || 0,\n    current: Number(data.current) || 0,\n    total_power: Number(data.total_power) || 0,\n    relay_lamp: Number(data.relay_lamp) || 0,\n    relay_laptop: Number(data.relay_laptop) || 0,\n    relay_kettle: Number(data.relay_kettle) || 0,\n    relay_toaster: Number(data.relay_toaster) || 0\n};\n\n\nbuffer.push(power);\n\n\nif (buffer.length > 599) {\n    buffer.shift();\n}\n\n\nflow.set(\"buffer\", buffer);\n\n\nnode.warn(\"BUFFER SIZE = \" + buffer.length);\n\n\nif (buffer.length === 599) {\n\n\n    node.warn(\"BUFFER FULL\");\n\n\n    msg.payload = {\n        power: buffer\n    };\n\n\n    return msg;\n}\n\n\nreturn null;\n\n\n\n\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 570,
+        "y": 220,
+        "wires": [
+            [
+                "3b464c62926a94cd",
+                "920b1860d66897b2",
+                "5c51ca45de861f38"
+            ]
+        ]
+    },
+    {
+        "id": "d14b256fb9e71ae0",
+        "type": "ui_gauge",
+        "z": "c2e9e564fd169a4f",
+        "name": "Total Power Gauge",
+        "group": "cadb4a93181419e2",
+        "order": 5,
+        "width": 6,
+        "height": 4,
+        "gtype": "gage",
+        "title": "Total Power",
+        "label": "W",
+        "format": "{{value}}",
+        "min": 0,
+        "max": "5000",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "1500",
+        "seg2": "2200",
+        "diff": false,
+        "className": "",
+        "x": 1350,
+        "y": 300,
+        "wires": []
+    },
+    {
+        "id": "fb7fe7ba57d70533",
+        "type": "ui_text",
+        "z": "c2e9e564fd169a4f",
+        "group": "cadb4a93181419e2",
+        "order": 1,
+        "width": 6,
+        "height": 1,
+        "name": "",
+        "label": "Lamp",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "className": "",
+        "style": false,
+        "font": "",
+        "fontSize": 16,
+        "color": "#000000",
+        "x": 1310,
+        "y": 140,
+        "wires": []
+    },
+    {
+        "id": "fe3b4e193feb0f55",
+        "type": "ui_text",
+        "z": "c2e9e564fd169a4f",
+        "group": "cadb4a93181419e2",
+        "order": 2,
+        "width": 6,
+        "height": 1,
+        "name": "",
+        "label": "Kettle",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "className": "",
+        "style": false,
+        "font": "",
+        "fontSize": 16,
+        "color": "#000000",
+        "x": 1310,
+        "y": 180,
+        "wires": []
+    },
+    {
+        "id": "41451b7dab9c1300",
+        "type": "ui_text",
+        "z": "c2e9e564fd169a4f",
+        "group": "cadb4a93181419e2",
+        "order": 3,
+        "width": 6,
+        "height": 1,
+        "name": "",
+        "label": "Toaster",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "className": "",
+        "style": false,
+        "font": "",
+        "fontSize": 16,
+        "color": "#000000",
+        "x": 1320,
+        "y": 220,
+        "wires": []
+    },
+    {
+        "id": "69cc15fbbe6b5025",
+        "type": "ui_text",
+        "z": "c2e9e564fd169a4f",
+        "group": "cadb4a93181419e2",
+        "order": 4,
+        "width": 6,
+        "height": 1,
+        "name": "",
+        "label": "Laptop",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "className": "",
+        "style": false,
+        "font": "",
+        "fontSize": 16,
+        "color": "#000000",
+        "x": 1310,
+        "y": 260,
+        "wires": []
+    },
+    {
+        "id": "3b464c62926a94cd",
+        "type": "http request",
+        "z": "c2e9e564fd169a4f",
+        "name": "Seq2Point API",
+        "method": "POST",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "http://127.0.0.1:5000/predict",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [
+            {
+                "keyType": "other",
+                "keyValue": "Content-Type",
+                "valueType": "other",
+                "valueValue": "application/json"
+            }
+        ],
+        "x": 840,
+        "y": 160,
+        "wires": [
+            [
+                "4c18c1d7231608e4",
+                "2883cbc6306dd88e",
+                "ab6e2b9bdf6eb879",
+                "a9d524c582864782"
+            ]
+        ]
+    },
+    {
+        "id": "4c18c1d7231608e4",
+        "type": "debug",
+        "z": "c2e9e564fd169a4f",
+        "name": "Seq2Point Results",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1150,
+        "y": 100,
+        "wires": []
+    },
+    {
+        "id": "920b1860d66897b2",
+        "type": "debug",
+        "z": "c2e9e564fd169a4f",
+        "name": "Buffer Output",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 810,
+        "y": 120,
+        "wires": []
+    },
+    {
+        "id": "2883cbc6306dd88e",
+        "type": "function",
+        "z": "c2e9e564fd169a4f",
+        "name": "Format for UI",
+        "func": "const status = msg.payload.status || {};\nconst power = msg.payload.power || {};\n\n// Appliance status\nlet ui_status = {\n    lamp: \"OFF\",\n    kettle: \"OFF\",\n    toaster: \"OFF\",\n    laptop: \"OFF\"\n};\n\n// Update status\nfor (const appliance in status) {\n    if (status[appliance] == 1) {\n        ui_status[appliance] = \"ON\";\n    }\n}\n\n// Total detected power\nlet total_power = 0;\n\nfor (const appliance in power) {\n    total_power += Number(power[appliance]);\n}\n\nreturn [\n    { payload: ui_status.lamp },\n    { payload: ui_status.kettle },\n    { payload: ui_status.toaster },\n    { payload: ui_status.laptop },\n    { payload: total_power.toFixed(2) }\n];\n\n",
+        "outputs": 5,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1130,
+        "y": 220,
+        "wires": [
+            [
+                "fb7fe7ba57d70533"
+            ],
+            [
+                "fe3b4e193feb0f55"
+            ],
+            [
+                "41451b7dab9c1300"
+            ],
+            [
+                "69cc15fbbe6b5025"
+            ],
+            [
+                "d14b256fb9e71ae0"
+            ]
+        ]
+    },
+    {
+        "id": "5c51ca45de861f38",
+        "type": "http request",
+        "z": "c2e9e564fd169a4f",
+        "name": "Classifier API",
+        "method": "POST",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "http://localhost:5001/classify",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 830,
+        "y": 260,
+        "wires": [
+            [
+                "bc6c1d979d999ab6",
+                "33d77318c3c5ab4c"
+            ]
+        ]
+    },
+    {
+        "id": "bc6c1d979d999ab6",
+        "type": "debug",
+        "z": "c2e9e564fd169a4f",
+        "name": "Classifier Results",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1110,
+        "y": 300,
+        "wires": []
+    },
+    {
+        "id": "33d77318c3c5ab4c",
+        "type": "function",
+        "z": "c2e9e564fd169a4f",
+        "name": "Format Classifier Data",
+        "func": "msg.payload = {\n\n    cls_laptop:\n        msg.payload.status?.laptop || 0,\n\n    cls_kettle:\n        msg.payload.status?.kettle || 0,\n\n    cls_lamp:\n        msg.payload.status?.lamp || 0,\n\n    cls_toaster:\n        msg.payload.status?.toaster || 0,\n\n\n    prob_laptop:\n        Number(msg.payload.probability?.laptop || 0),\n\n    prob_kettle:\n        Number(msg.payload.probability?.kettle || 0),\n\n    prob_lamp:\n        Number(msg.payload.probability?.lamp || 0),\n\n    prob_toaster:\n        Number(msg.payload.probability?.toaster || 0)\n\n};\n\n\nreturn msg;\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1020,
+        "y": 400,
+        "wires": [
+            [
+                "d00bdbab1228c194",
+                "0ec01866a371a372"
+            ]
+        ]
+    },
+    {
+        "id": "d00bdbab1228c194",
+        "type": "debug",
+        "z": "c2e9e564fd169a4f",
+        "name": "Classifier Payload Preview",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1320,
+        "y": 440,
+        "wires": []
+    },
+    {
+        "id": "0ec01866a371a372",
+        "type": "influxdb out",
+        "z": "c2e9e564fd169a4f",
+        "influxdb": "55d74a5002d64130",
+        "name": "InfluxDB Write Classifier",
+        "measurement": "classifier_data",
+        "precision": "",
+        "retentionPolicy": "",
+        "database": "database",
+        "precisionV18FluxV20": "ms",
+        "retentionPolicyV18Flux": "",
+        "org": "SmartEnergy",
+        "bucket": "My Home",
+        "x": 1310,
+        "y": 360,
+        "wires": []
+    },
+    {
+        "id": "de281ffc5e5a7a91",
+        "type": "global-config",
+        "env": [],
+        "modules": {
+            "node-red-dashboard": "3.6.6",
+            "node-red-contrib-influxdb": "0.7.0"
+        }
+    }
+]
