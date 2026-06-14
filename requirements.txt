@@ -1,0 +1,13 @@
+tensorflow>=2.8.0
+pandas
+numpy
+scikit-learn
+scipy
+matplotlib
+seaborn
+paho-mqtt
+influxdb-client
+wandb
+pyyaml
+tqdm
+jupyter
