@@ -1,0 +1,6 @@
+Appliance,MAE,F1,Optimal_Threshold
+toaster,0.0045,0.0044,0.00
+kettle,0.0035,0.7727,0.28
+computer,0.0430,0.5126,0.00
+lamp,0.2161,0.5898,0.00
+AVERAGE,0.0668,0.4699,N/A
