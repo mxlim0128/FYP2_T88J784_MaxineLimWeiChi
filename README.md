@@ -239,7 +239,7 @@ To keep the repository lightweight:
 
 ---
 
-# 👩‍🎓 Author
+# 👩🏻‍💻 Author
 
 **Maxine Lim Wei Chi**
 
