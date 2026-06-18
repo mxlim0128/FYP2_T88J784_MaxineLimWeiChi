@@ -1,4 +1,4 @@
-# ⚡ Smart Energy Monitoring and Appliance Control Using IoT and NILM
+# Smart Energy Monitoring and Appliance Control Using IoT and NILM
 
 ## 📖 Overview
 
