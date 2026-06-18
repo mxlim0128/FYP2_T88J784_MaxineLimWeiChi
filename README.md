@@ -4,7 +4,7 @@
 
 This repository contains the source code, deployment configurations, and documentation for a Final Year Project (FYP) titled:
 
-### ⚡ Smart Energy Monitoring and Appliance Control Using IoT
+### Smart Energy Monitoring and Appliance Control Using IoT
 
 The project presents an IoT-based smart energy management system that combines real-time power monitoring, Non-Intrusive Load Monitoring (NILM), appliance classification, and automated load control.
 
@@ -239,7 +239,7 @@ To keep the repository lightweight:
 
 ---
 
-# 👨‍💻 Author
+# 👩‍🎓 Author
 
 **Maxine Lim Wei Chi**
 
