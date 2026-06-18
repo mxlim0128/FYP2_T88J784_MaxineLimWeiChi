@@ -8,9 +8,9 @@ This repository contains the source code, deployment configurations, and documen
 
 The project presents an IoT-based smart energy management system that combines real-time power monitoring, Non-Intrusive Load Monitoring (NILM), appliance classification, and automated load control.
 
-🏠 The system estimates individual appliance energy consumption from aggregate household power measurements and provides real-time visualization through a web-based dashboard.
+The system estimates individual appliance energy consumption from aggregate household power measurements and provides real-time visualization through a web-based dashboard.
 
-🚀 The proposed solution integrates IoT hardware, machine learning models, and cloud-ready services to improve energy awareness and support intelligent energy management in residential environments.
+The proposed solution integrates IoT hardware, machine learning models, and cloud-ready services to improve energy awareness and support intelligent energy management in residential environments.
 
 ---
 
