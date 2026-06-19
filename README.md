@@ -236,15 +236,63 @@ The system includes a priority-based load management mechanism to prevent excess
 
 ---
 
-# 📚 Dataset
+## 📚 Dataset
 
-The NILM models were trained and evaluated using the **REFIT Energy Dataset**.
+The NILM models were trained and evaluated using the REFIT Electrical Load Measurements (Cleaned) Dataset.
 
-### 📂 Dataset Source
+### Dataset Information
 
-📊 REFIT Electrical Load Measurements Dataset
+- Dataset Name: REFIT Electrical Load Measurements (Cleaned)
+- Number of Houses: 20
+- Sampling Interval: 8 seconds
+- Data Type: Aggregate and appliance-level power measurements
+- DOI: 10.15129/9ab14b0e-19ac-4279-938f-27f643078cec
+
+### Dataset Citation
+
+Murray, D., Stankovic, L., Stankovic, V., Lulic, S., and Sladojevic, S.
+
+REFIT: Electrical Load Measurements (Cleaned).
+
+DOI: 10.15129/9ab14b0e-19ac-4279-938f-27f643078cec
+
+### Dataset Source
+
+https://pureportal.strath.ac.uk/en/datasets/refit-electrical-load-measurements-cleaned
+
+### Notes
+
+- Raw dataset files are not included in this repository.
+- Users should download the dataset from the official source.
+- The dataset was preprocessed and converted into HDF5 and NPZ formats for NILM model training and evaluation.
 
 ---
+
+## 📦 Requirements
+
+The project was developed and tested using the following Python libraries:
+
+```text
+tensorflow>=2.8.0
+pandas
+numpy
+scikit-learn
+scipy
+matplotlib
+seaborn
+paho-mqtt
+influxdb-client
+wandb
+pyyaml
+tqdm
+jupyter
+```
+
+Install dependencies using:
+
+```bash
+pip install -r requirements.txt
+```
 
 # 🚀 Deployment
 
