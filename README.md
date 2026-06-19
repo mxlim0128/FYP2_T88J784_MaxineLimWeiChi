@@ -91,19 +91,21 @@ The appliance classifier determines the operating status (ON/OFF) of monitored a
 
 The Seq2Point NILM model was trained using Google Colab with GPU acceleration to improve training efficiency and reduce computation time during deep learning model development.
 
-Training Environment
-Item	Details
-Platform	Google Colab
-Hardware Accelerator	NVIDIA GPU (T4/A100 depending on availability)
-Framework	TensorFlow / Keras
-Dataset	REFIT Energy Dataset
-Primary Model	Seq2Point CNN
-Training Epochs	100 Epochs
-Loss Function	Mean Squared Error (MSE)
-Optimizer	Adam
-Reason for Using Google Colab
+| Item                 | Details                                        |
+| -------------------- | ---------------------------------------------- |
+| Platform             | Google Colab                                   |
+| Hardware Accelerator | NVIDIA GPU (T4/A100 depending on availability) |
+| Framework            | TensorFlow / Keras                             |
+| Dataset              | REFIT Energy Dataset                           |
+| Primary Model        | Seq2Point CNN                                  |
+| Training Epochs      | **100 Epochs**                                 |
+| Loss Function        | Mean Squared Error (MSE)                       |
+| Optimizer            | Adam                                           |
 
+Reason for Using Google Colab
 The local development machine had limited computational resources for training deep learning models. Therefore, Google Colab was utilized to provide GPU acceleration for the Seq2Point model training process. This significantly reduced training time and enabled efficient experimentation with model parameters. The trained model was subsequently integrated into the IoT energy monitoring system deployed on the Raspberry Pi 4 platform.
+
+
 ---
 
 ## 📊 4. Visualization and Storage Layer
