@@ -87,8 +87,7 @@ The Seq2Point model is used as the primary disaggregation model to estimate appl
 
 The appliance classifier determines the operating status (ON/OFF) of monitored appliances.
 
-🧠 Model Training Environment
-
+### 🧠 Model Training Environment
 The Seq2Point NILM model was trained using Google Colab with GPU acceleration to improve training efficiency and reduce computation time during deep learning model development.
 
 | Item                 | Details                                        |
