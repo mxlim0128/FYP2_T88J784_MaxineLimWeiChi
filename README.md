@@ -115,8 +115,8 @@ The local development machine had limited computational resources for training d
 
 ```text
 /home/max/smart-energy-nilm
-├── Classifier/
 ├── Seq2Point/
+├── Classifier/
 ├── docker/
 │   ├── docker-compose.yml
 │   ├── grafana/
@@ -135,15 +135,15 @@ This repository contains the deployment environment used on the Raspberry Pi 4. 
 
 ```text
 smart-energy-nilm/
-├── Classifier/
 ├── data/
 │   ├── raw/
 │   ├── processed/
 │   └── npz/
 ├── docker/
+├── Threshold/
 ├── FHMM/
 ├── Seq2Point/
-├── Threshold/
+├── Classifier/
 ├── src/
 ├── venv/
 ├── requirements.txt
