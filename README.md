@@ -111,7 +111,9 @@ The local development machine had limited computational resources for training d
 
 ### 📂 Repository Structure
 
-# Raspberry Pi Deployment Repository
+### Raspberry Pi Deployment Repository
+
+```text
 /home/max/smart-energy-nilm
 ├── Classifier/
 ├── Seq2Point/
@@ -125,10 +127,13 @@ The local development machine had limited computational resources for training d
 ├── classifier_api.py
 ├── seq2point_api.py
 └── requirements.txt
+```
 
 This repository contains the deployment environment used on the Raspberry Pi 4. It hosts the machine learning inference APIs, Docker services, and IoT platform components required for real-time energy monitoring and appliance control.
 
-# Linux Mint Development Repository
+### Linux Mint Development Repository
+
+```text
 smart-energy-nilm/
 ├── Classifier/
 ├── data/
@@ -143,6 +148,7 @@ smart-energy-nilm/
 ├── venv/
 ├── requirements.txt
 └── seq2_point_multiappliance.py
+```
 
 The Linux Mint repository was used for NILM model development, dataset preprocessing, algorithm evaluation, and experimental analysis. It contains implementations of Threshold-Based NILM, FHMM, Seq2Point, appliance classification models, trained model files, datasets, and evaluation results.
 
