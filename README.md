@@ -109,6 +109,43 @@ The local development machine had limited computational resources for training d
 
 ## 📊 4. Visualization and Storage Layer
 
+### 📂 Repository Structure
+
+# Raspberry Pi Deployment Repository
+/home/max/smart-energy-nilm
+├── Classifier/
+├── Seq2Point/
+├── docker/
+│   ├── docker-compose.yml
+│   ├── grafana/
+│   ├── influxdb2/
+│   ├── mosquitto/
+│   └── node-red/
+├── venv/
+├── classifier_api.py
+├── seq2point_api.py
+└── requirements.txt
+
+This repository contains the deployment environment used on the Raspberry Pi 4. It hosts the machine learning inference APIs, Docker services, and IoT platform components required for real-time energy monitoring and appliance control.
+
+# Linux Mint Development Repository
+smart-energy-nilm/
+├── Classifier/
+├── data/
+│   ├── raw/
+│   ├── processed/
+│   └── npz/
+├── docker/
+├── FHMM/
+├── Seq2Point/
+├── Threshold/
+├── src/
+├── venv/
+├── requirements.txt
+└── seq2_point_multiappliance.py
+
+The Linux Mint repository was used for NILM model development, dataset preprocessing, algorithm evaluation, and experimental analysis. It contains implementations of Threshold-Based NILM, FHMM, Seq2Point, appliance classification models, trained model files, datasets, and evaluation results.
+
 ### Technologies
 
 * 🗄️ InfluxDB
